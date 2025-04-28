@@ -1,207 +1,42 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>player</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+c:\Users\hmets\yt-dlp>python youtube-dl https://filemoon.sx/e/jv6whayugrjc/vif.mp4 -v
+python: can't open file 'c:\\Users\\hmets\\yt-dlp\\youtube-dl': [Errno 2] No such file or directory
 
-    body, html {
-      width: 100%;
-      height: 100%;
-      background-color: #000;
-      color: white;
-      font-family: Arial, sans-serif;
-      overflow-x: hidden;
-    }
-
-    .movie-card {
-      position: relative;
-      width: 100%;
-      height: 100vh; /* Ajustar la altura para pantalla completa */
-      overflow: hidden;
-    }
-
-    /* Imagen para pantallas más pequeñas (móviles) */
-    .movie-card img.mobile-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Mantener la proporción de la imagen sin distorsionarla */
-      display: block;
-    }
-
-    /* Imagen para pantallas más grandes (escritorio y tv) */
-    .movie-card img.desktop-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Mantener la proporción de la imagen sin distorsionarla */
-      display: none;
-    }
-
-    /* Media query para pantallas grandes */
-    @media (min-width: 768px) {
-      .movie-card img.mobile-image {
-        display: none; /* Ocultar imagen para móviles */
-      }
-      
-      .movie-card img.desktop-image {
-        display: block; /* Mostrar imagen para pantallas grandes */
-      }
-    }
-
-    .bottom-gradient {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 70%;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3), transparent);
-      z-index: 1;
-    }
-
-    .button-container {
-      position: absolute;
-      bottom: 40px; /* Ajustado para no estar tan abajo */
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      z-index: 2;
-      width: 100%;
-    }
-
-    .movie-title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px; /* Espaciado ajustado */
-    }
-
-    .movie-info {
-      font-size: 14px;
-      color: #ccc;
-      margin-bottom: 30px;
-    }
-
-    .movie-info span {
-      margin: 0 8px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      padding: 10px 20px;
-      font-size: 10px;
-      font-weight: bold;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin: 0 15px;
-    }
-
-    .play-button {
-      background-color: white;
-      color: black;
-    }
-
-    .play-button:hover {
-      background-color: #e6e6e6;
-    }
-
-    .download-button {
-      background-color: rgba(109, 109, 110, 0.7);
-      color: white;
-    }
-
-    .download-button:hover {
-      background-color: rgba(109, 109, 110, 1);
-    }
-
-    .button svg {
-      margin-right: 6px;
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-    }
-
-    .embed-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      z-index: 9999;
-      display: none;
-    }
-
-    .embed-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
-</head>
-<body>
-  <div class="movie-card">
-    <!-- Imagen para dispositivos móviles -->
-    <img src="https://image.tmdb.org/t/p/original/emSPqqKHiSVGQtO40yNYW9gdvjy.jpg" alt="Película" class="mobile-image">
-    
-    <!-- Imagen para pantallas grandes -->
-    <img src="https://image.tmdb.org/t/p/original/77P56ZcL8M9Cw7FIptMIGjhNJoj.jpg" alt="Película" class="desktop-image">
-    
-    <div class="bottom-gradient"></div>
-  </div>
-
-  <div class="button-container">
-    <div class="movie-title">Transformers</div> <!-- Título de la película -->
-    <div class="movie-info">
-      <span>2007</span> <!-- Año de la película -->
-      <span>|</span> <!-- Separador -->
-      <span>HD</span> <!-- Calidad HD -->
-    </div>
-    <button class="button play-button" onclick="playMovie()">
-      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      Reproducir
-    </button>
-    
-    <button class="button download-button" onclick="downloadMovie()">
-      <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h4.67v6h4V9h4.67L12 2z"/></svg>
-      Descargar
-    </button>
-  </div>
-
-  <!-- Reproductor fullscreen -->
-  <div class="embed-container" id="embed-container">
-    <iframe id="embed-frame" src="" allowfullscreen sandbox="allow-scripts"></iframe>
-  </div>
-
-  <script>
-    function playMovie() {
-      const embedContainer = document.getElementById('embed-container');
-      const iframe = document.getElementById('embed-frame');
-
-      iframe.src = 'https://filegram.to/e/dxcjwjyc1p2x'; // Enlace al reproductor
-      embedContainer.style.display = 'block';
-    }
-
-    function downloadMovie() {
-      window.open('https://uii.io/hOLu', '_blank'); // Enlace de descarga
-    }
-
-    // Cerrar con tecla ESC
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        const embedContainer = document.getElementById('embed-container');
-        const iframe = document.getElementById('embed-frame');
-        iframe.src = '';
-        embedContainer.style.display = 'none';
-      }
-    });
-  </script>
-</body>
-</html>
+c:\Users\hmets\yt-dlp>youtube-dl https://filemoon.sx/e/jv6whayugrjc/vif.mp4 -v
+[debug] System config: []
+[debug] User config: []
+[debug] Custom config: []
+[debug] Command-line args: ['https://filemoon.sx/e/jv6whayugrjc/vif.mp4', '-v']
+[debug] Encodings: locale cp1252, fs utf-8, out utf-8, pref cp1252
+[debug] youtube-dl version 2021.12.17
+[debug] Python 3.12.4 (CPython AMD64 64bit) - Windows-11-10.0.22631-SP0 - OpenSSL 3.0.13 30 Jan 2024
+[debug] exe versions: none
+[debug] Proxy map: {}
+[FileMoon] jv6whayugrjc: Downloading webpage
+Traceback (most recent call last):
+  File "\\?\C:\Users\hmets\AppData\Local\Programs\Python\Python312\Scripts\youtube-dl-script.py", line 33, in <module>
+    sys.exit(load_entry_point('youtube-dl==2021.12.17', 'console_scripts', 'youtube-dl')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\__init__.py", line 473, in main
+    _real_main(argv)
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\__init__.py", line 463, in _real_main
+    retcode = ydl.download(all_urls)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\YoutubeDL.py", line 2218, in download
+    res = self.extract_info(
+          ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\YoutubeDL.py", line 852, in extract_info
+    return self.__extract_info(url, ie, download, extra_info, process)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\YoutubeDL.py", line 859, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\YoutubeDL.py", line 955, in __extract_info
+    ie_result = ie.extract(url)
+                ^^^^^^^^^^^^^^^
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\extractor\common.py", line 571, in extract
+    ie_result = self._real_extract(url)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hmets\AppData\Local\Programs\Python\Python312\Lib\site-packages\youtube_dl-2021.12.17-py3.12.egg\youtube_dl\extractor\filemoon.py", line 30, in _real_extract
+    packed = matches[-1]
+             ~~~~~~~^^^^
+IndexError: list index out of range
